@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Voice AI Agent</title>
+</head>
+<body>
+
+<h2>🩺 Clinical AI Assistant</h2>
+
+<input type="text" id="inputBox" placeholder="Type your message..." />
+<button onclick="sendMessage()">Send</button>
+
+<p><b>Response:</b></p>
+<div id="responseBox"></div>
+
+<script>
+let ws = new WebSocket("ws://127.0.0.1:8001/ws");
+
+ws.onmessage = function(event) {
+    let text = new TextDecoder().decode(event.data);
+    document.getElementById("responseBox").innerText = text;
+};
+
+function sendMessage() {
+    let msg = document.getElementById("inputBox").value;
+    ws.send(new TextEncoder().encode(msg));
+}
+</script>
+
+</body>
+</html>
